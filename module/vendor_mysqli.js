@@ -32,8 +32,8 @@ mysqliq['get_saved_leads']='SELECT * from vendorproduct INNER JOIN product on ve
 mysqliq['products']='SELECT type from vendor_services  WHERE vendor_id=? GROUP BY type';
 mysqliq['total_services']='SELECT count(*) from vendor_services  WHERE vendor_id=?';
 mysqliq['maximum_sales_vendor']='SELECT count(*),type from product  WHERE accepted_vendor=? GROUP BY type ORDER BY count(*) DESC';
-mysqliq['sales_vendor']='SELECT status,count(*) from vendorproduct  WHERE Uid=? AND (product_status!=? AND product_status!=?) GROUP BY product_status';
-mysqliq['most_requested_service']='SELECT count(product.service_type) AS count,product.service_type  from product INNER JOIN vendor_services on vendor_services.service_type=product.service_type  WHERE vendor_services.vendor_id=? GROUP BY product.service_type ORDER BY count(product.service_type) DESC';
+mysqliq['sales_vendor']='SELECT product_status,count(*) as count from vendorproduct  WHERE Uid=? AND (product_status!=? AND product_status!=?) GROUP BY product_status';
+mysqliq['most_requested_service']='SELECT count(product.type) AS count,product.type  from product INNER JOIN vendor_services on vendor_services.type=product.type  WHERE vendor_services.vendor_id=? GROUP BY product.type ORDER BY count(product.type) DESC';
 
 mysqliq['vendor_contribution']='SELECT count(*) AS count from product  WHERE status=? AND accepted_vendor=?';
 mysqliq['no_of_total_sales']='SELECT count(*) AS count from product  WHERE status=?';
@@ -42,5 +42,5 @@ mysqliq['vendor_rejected']='INSERT into vendorproduct(Pid,Uid,product_status) VA
 
 
 mysqliq['get_user_id']='SELECT user_id from product where id=?'
-
-mysqliq['vendor_month_sale']="SELECT product_status,count(*) AS total FROM vendorproduct WHERE Uid=? AND updated_at BETWEEN ? and ? GROUP BY product_status"
+mysqliq['vendor_month_sale']="SELECT count(*) AS total FROM product WHERE accepted_vendor=? AND status = ?"
+// mysqliq['vendor_month_sale']="SELECT count(*) AS total FROM product WHERE accepted_vendor=? AND (updated_at BETWEEN ? and ?) AND status = ?"

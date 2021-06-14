@@ -227,7 +227,8 @@ class Vendor {
         let nv= makeDate.toISOString();
         let end_date= nv.slice(0,8)+"31";
         let start_date= nv.slice(0,8)+"01";
-        let escape_data=[req.body.id,start_date,end_date];
+        // let escape_data=[req.body.id,start_date,end_date,"accepted"];
+        let escape_data=[req.body.id,"accepted"];
         let strQuery = await mysqliClass.mysqli(mysql, 'vendor_month_sale');
          return await global.mysql.query(strQuery, escape_data);        
         
