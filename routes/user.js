@@ -43,5 +43,6 @@ app.get('/vendor_month_sale/:user_id',vendor.vendor_month_sale)
 app.get('/get_site/:user_id',user.get_site)
 
 app.post('/request_help/:user_id', upload.single('attachment'), user.request_help)
+app.get('/vendor_sale_percentage/:user_id',vendor.vendor_sale_percentage)
 
 module.exports = app

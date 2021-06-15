@@ -44,3 +44,7 @@ mysqliq['vendor_rejected']='INSERT into vendorproduct(Pid,Uid,product_status) VA
 mysqliq['get_user_id']='SELECT user_id from product where id=?'
 mysqliq['vendor_month_sale']="SELECT count(*) AS total FROM product WHERE accepted_vendor=? AND status = ?"
 // mysqliq['vendor_month_sale']="SELECT count(*) AS total FROM product WHERE accepted_vendor=? AND (updated_at BETWEEN ? and ?) AND status = ?"
+
+
+mysqliq['current_month_sale']='SELECT COUNT(*) AS currmonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'
+mysqliq['prev_month_sale']='SELECT COUNT(*) AS prevMonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'

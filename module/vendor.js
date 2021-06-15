@@ -233,6 +233,42 @@ class Vendor {
          return await global.mysql.query(strQuery, escape_data);        
         
     }
+    async vendor_month_percentage(req){
+        let mysql={};
+        let end_day='31';
+        let start_day='1';
+        var myVariable = new Date();
+        var makeDate = new Date(myVariable);
+
+        makeDate.setMonth(makeDate.getMonth()-1);
+        let nv= makeDate.toISOString();
+        let prev_end_date= nv.slice(0,8)+"31";
+        let prev_start_date= nv.slice(0,8)+"01";
+
+        makeDate.setMonth(makeDate.getMonth()+1);
+        let nv1= makeDate.toISOString();
+        let curr_end_date= nv1.slice(0,8)+"31";
+        let curr_start_date= nv1.slice(0,8)+"01";
+        
+
+        let escape_data=[req.body.id,prev_start_date,prev_end_date];
+        let strQuery= await mysqliClass.mysqli(mysql, 'prev_month_sale');
+
+        let escape_data1=[req.body.id,curr_start_date,curr_end_date];
+        let strQuery1 = await mysqliClass.mysqli(mysql, 'current_month_sale');
+        
+        let prev_month= await global.mysql.query(strQuery, escape_data);        
+        let current_month=await global.mysql.query(strQuery1,escape_data1);
+
+        console.log(prev_month[0].prevMonth,current_month[0].currmonth);
+        if(prev_month[0].prevMonth===0){
+            console.log(current_month[0].currmonth)
+        }
+        else{
+            let percentage= ((current_month[0].currmonth-prev_month[0].prevMonth)/prev_month[0].prevMonth)*100;
+            console.log('sale increased by',percentage,"%")
+        }
+    }
 }
 
 

@@ -253,5 +253,17 @@ module.exports = {
             console.log(error);
             jsonResponse(res, "error", error);
         }
-    }
+    },
+    vendor_sale_percentage :async(req,res)=>{
+        try{
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
+            await Promise.all([vendor.vendor_month_percentage(req)])
+            jsonResponse(res, "sucess")
+
+        }
+        catch(error){
+            console.log(error);
+            jsonResponse(res, "error", error);
+        }
+    },
 }
