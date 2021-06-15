@@ -223,12 +223,12 @@ class Vendor {
         let start_day='1';
         var myVariable = new Date();
         var makeDate = new Date(myVariable);
-        makeDate.setMonth(makeDate.getMonth() - 1);
+        makeDate.setMonth(makeDate.getMonth());
         let nv= makeDate.toISOString();
         let end_date= nv.slice(0,8)+"31";
         let start_date= nv.slice(0,8)+"01";
-        // let escape_data=[req.body.id,start_date,end_date,"accepted"];
-        let escape_data=[req.body.id,"accepted"];
+        let escape_data=[req.body.id,"accepted","rejected",start_date,end_date];
+        
         let strQuery = await mysqliClass.mysqli(mysql, 'vendor_month_sale');
          return await global.mysql.query(strQuery, escape_data);        
         
@@ -267,8 +267,26 @@ class Vendor {
         else{
             let percentage= ((current_month[0].currmonth-prev_month[0].prevMonth)/prev_month[0].prevMonth)*100;
             console.log('sale increased by',percentage,"%")
+            return percentage;
         }
     }
+    async most_sold_product(req) {
+        let mysql = {};
+        let escape_data;
+        let end_day='31';
+        let start_day='1';
+        var myVariable = new Date();
+        var makeDate = new Date(myVariable);
+        makeDate.setMonth(makeDate.getMonth());
+        let nv= makeDate.toISOString();
+        let end_date= nv.slice(0,8)+"31";
+        let start_date= nv.slice(0,8)+"01";
+    
+        escape_data =[req.body.id,start_date,end_date]
+        let strQuery = await mysqliClass.mysqli(mysql, 'most_sold_product');
+        return await global.mysql.query(strQuery, escape_data);
+    }
+    
 }
 
 

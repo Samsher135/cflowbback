@@ -257,8 +257,24 @@ module.exports = {
     vendor_sale_percentage :async(req,res)=>{
         try{
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            await Promise.all([vendor.vendor_month_percentage(req)])
-            jsonResponse(res, "sucess")
+            let percentage=await Promise.all([vendor.vendor_month_percentage(req)])
+            jsonResponse(res, "sucess",percentage)
+
+        }
+        catch(error){
+            console.log(error);
+            jsonResponse(res, "error", error);
+        }
+    },
+    most_sold_product :async(req,res)=>{
+        try{
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
+            let [results]=await Promise.all([vendor.most_sold_product(req)])
+            console.log(results[0],"results")
+            const data=JSON.parse(results[0]?.data)
+            const count=results[0]?.count
+            const results1=results[0]?.type
+            jsonResponse(res, "sucess",{results1,data,count})
 
         }
         catch(error){
