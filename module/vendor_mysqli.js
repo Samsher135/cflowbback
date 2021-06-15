@@ -37,7 +37,7 @@ mysqliq['most_requested_service']='SELECT count(product.type) AS count,product.t
 
 mysqliq['vendor_contribution']='SELECT count(*) AS count from product  WHERE status=? AND accepted_vendor=?';
 mysqliq['no_of_total_sales']='SELECT count(*) AS count from product  WHERE status=?';
-mysqliq['vendor_pitched']='INSERT into vendorproduct(Pid,Uid,pitch_value,product_status) VALUES(?,?,?,?)';
+mysqliq['vendor_pitched']='INSERT into vendorproduct(Pid,Uid,pitch_value,price_detail,product_status) VALUES(?,?,?,?,?)';
 mysqliq['vendor_rejected']='INSERT into vendorproduct(Pid,Uid,product_status) VALUES(?,?,?)';
 
 
@@ -49,6 +49,6 @@ mysqliq['vendor_month_sale']="SELECT product_status,count(*) as count from vendo
 mysqliq['current_month_sale']='SELECT COUNT(*) AS currmonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'
 mysqliq['prev_month_sale']='SELECT COUNT(*) AS prevMonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'
 mysqliq['most_sold_product']='SELECT data,type,COUNT(type) AS count FROM product WHERE status="accepted" AND accepted_vendor=? AND updated_at BETWEEN ? and ? GROUP BY type'
-
+mysqliq['get_price_detail'] = 'SELECT * FROM vendorproduct WHERE Uid=? AND Pid=?'
 
 

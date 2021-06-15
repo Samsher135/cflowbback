@@ -196,7 +196,8 @@ class Vendor {
         let mysql = {};
         let escape_data;
         console.log('inside vendor_pitch')
-        escape_data =[req.body.Pid,req.body.id,req.body.pitch_value,"pitched"]
+        let price_detail = JSON.stringify(req.body.price_detail)
+        escape_data =[req.body.Pid,req.body.id,req.body.pitch_value,price_detail,"pitched"]
         let a = req.body.Pid;
         let b= await mysqliClass.mysqli(mysql,'get_user_id');
         let c=await global.mysql.query(b,a);
@@ -286,7 +287,13 @@ class Vendor {
         let strQuery = await mysqliClass.mysqli(mysql, 'most_sold_product');
         return await global.mysql.query(strQuery, escape_data);
     }
-    
+    async get_price_detail(req) {
+        let mysql = {};
+        let escape_data;
+        escape_data =[req.body.id,req.body.productId]
+        let strQuery = await mysqliClass.mysqli(mysql, 'get_price_detail');
+        return await global.mysql.query(strQuery, escape_data);
+    }
 }
 
 

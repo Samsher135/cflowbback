@@ -282,4 +282,15 @@ module.exports = {
             jsonResponse(res, "error", error);
         }
     },
+    get_price_detail:async(req,res)=>{
+        try{
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
+            let [results]=await Promise.all([vendor.get_price_detail(req)])
+            jsonResponse(res, "sucess",results)
+        }
+        catch(error){
+            console.log(error);
+            jsonResponse(res, "error", error);
+        }
+    },
 }
