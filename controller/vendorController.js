@@ -271,9 +271,21 @@ module.exports = {
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let [results]=await Promise.all([vendor.most_sold_product(req)])
             console.log(results[0],"results")
-            const data=JSON.parse(results[0]?.data)
-            const count=results[0]?.count
-            const results1=results[0]?.type
+            let data;
+            let count;
+            let results1;
+            if(results[0])
+            {
+                data=JSON.parse(results[0]?.data)
+                count=results[0]?.count
+                results1=results[0]?.type
+            }
+            else
+            {
+                data="No Products Sold"
+                count=0
+                results1="Not Applicable"
+            }
             jsonResponse(res, "sucess",{results1,data,count})
 
         }

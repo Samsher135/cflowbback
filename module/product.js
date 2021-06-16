@@ -61,17 +61,17 @@ class Product {
         let escape_data = [req.body.id,req.body.service_type,req.body.type, req.body.quantity,"pending",req.body.urgent,req.body.deliver_by,delivery_address,JSON.stringify(req.body.data)];
         console.log(escape_data,"escape_data")
         
-        // let a= req.body.type;
-        // let b=await mysqliClass.mysqli(mysql, 'vendor_id');
-        // let c= await  global.mysql.query(b, a);
-        // // let details={name:"new request"}
-        // console.log(c,'vendor_id')
-        // let details={title:"new request",value:a,link:"123.www"}
-        // c.map(async (id)=>{
-        //     console.log(id.vendor_id)
-        //     await notification.getnotification(id.vendor_id,details)
-        // })
-        // await notification.get_user('vendor',details)
+        let a= req.body.type;
+        let b=await mysqliClass.mysqli(mysql, 'vendor_id');
+        let c= await  global.mysql.query(b, a);
+        // let details={name:"new request"}
+        console.log(c,'vendor_id')
+        let details={title:"New Request",value:a,link:"123.www"}
+        c.map(async (id)=>{
+            console.log(id.vendor_id)
+            await notification.getnotification(id.vendor_id,details)
+        })
+        await notification.get_user('vendor',details)
         let strQuery = await mysqliClass.mysqli(mysql, 'request_service');
         return await global.mysql.query(strQuery, escape_data);
     } 

@@ -201,7 +201,7 @@ class Vendor {
         let a = req.body.Pid;
         let b= await mysqliClass.mysqli(mysql,'get_user_id');
         let c=await global.mysql.query(b,a);
-        let detail={Title:"new lead",value:req.body.pitch_value,link:'localhost???'}
+        let detail={title:"New Pitch",value: "You have recived a new Pitch of worth" + req.body.pitch_value,link:'localhost???'}
         let userid=c[0].user_id;
         console.log(c)
         await notification.getnotification(userid,detail)

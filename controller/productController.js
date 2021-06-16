@@ -39,7 +39,7 @@ module.exports = {
         try {
             let id =req.params.user_id
             let[results]=await Promise.all([notification.all_notification(id)])
-            let results1=JSON.parse(results[0].details)
+            let results1=JSON.parse(results[0]?.details)
             jsonResponse(res, "all",results1)
         } catch (error) {
             console.log(error);

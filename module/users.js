@@ -170,7 +170,13 @@ class Users {
         let strQuery = await mysqliClass.mysqli(mysql, 'user_rejected_pitch');
         return await global.mysql.query(strQuery, escape_data);
     }
-   
+     async Table_filter(req){
+        let mysql = {};
+        let escape_data;
+        escape_data = [req.body.id];
+        let strQuery = await mysqliClass.mysqli(mysql, 'table_filter');
+        return await global.mysql.query(strQuery, escape_data);
+    }
 
     
 

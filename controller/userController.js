@@ -73,6 +73,14 @@ module.exports = {
                     console.log(results1,"results1")
                     const id=results1[0]?.id;
                     const token = jwt.sign({email:results1[0].email, id:results1[0].id} , "secretkey" , {expiresIn:"30d"})
+                    if(req.body.isUser){
+                        let[s]=await Promise.all([notification.create_user(JSON.stringify(id),"user")])
+                    }
+                    else
+                    {
+                        let[s]=await Promise.all([notification.create_user(JSON.stringify(id),"vendor")])
+                    }                 
+                    await Promise.all([notification.setnotification(JSON.stringify(id),[{title:"Welcome",value:"App is available at PlayStore ! Please do checkout" , link:null}])])
                     jsonResponse(res, "User Created", {token,id})
                 }
 
@@ -141,16 +149,15 @@ module.exports = {
 
                 const id=results[0].id;
                 const token = jwt.sign({email:results[0].email, id:results[0].id} , "secretkey" , {expiresIn:"30d"})
-                // let [result1]=await Promise.all([notification.find_user(JSON.stringify(results[0].id))])
-                // if(result1 != ''){
-                //     console.log('user exists')
-                // }
-                // else{
-                //     console.log('else')
-                //     let[s]=await Promise.all([notification.create_user(JSON.stringify(results[0].id),req.params.type)])
-                //     await Promise.all([notification.setnotification(JSON.stringify(results[0].id),['App is available at playstore'])])
+                let [result1]=await Promise.all([notification.find_user(JSON.stringify(results[0].id))])
+                if(result1 != ''){
+                    console.log('user exists')
+                }
+                else{
+                    console.log('else')
+                    
 
-                // }   
+                }   
                 jsonResponse(res, "User signed In", {token,id})
                 
             }
@@ -292,7 +299,7 @@ module.exports = {
             let [results] = await Promise.all([users.user_accepted_pitch(req)])
             let [results1]= await Promise.all([users.product_table_status_changed(req)])
             console.log(results1)
-            let detail ={Title:"Pitch accepted",value:req.body.Pitch_value,link:"local/to/table"}
+            let detail ={title:"Pitch accepted",value:req.body.Pitch_value,link:"local/to/table"}
             notification.getnotification(req.body.Uid,detail)
             jsonResponse(res, "sucess", results)
         } catch (error) {
@@ -311,6 +318,17 @@ module.exports = {
             console.log(error);
             jsonResponse(res, "error", error);
         };
+    },
+    Tablefilter:async(req,res)=>{
+        try {
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
+            let result=await Promise.all([users.Table_filter(req)])
+            jsonResponse(res, "sucess",result)
+
+        } catch (error) {
+            console.log(error);
+            jsonResponse(res, "error", error);
+        }
     },
     
 }

@@ -63,3 +63,4 @@ mysqliq['product_table_status_changed']='UPDATE product set status=? , accepted_
 mysqliq['user_rejected_pitch']='UPDATE vendorproduct set product_status=? WHERE Pid=? AND Uid=?'
 
 mysqliq['get_user_id']='SELECT user_id from product where id=?'
+mysqliq['table_filter']='SELECT DISTINCT(type) from product where user_id=?;'

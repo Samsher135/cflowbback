@@ -46,5 +46,6 @@ app.post('/request_help/:user_id', upload.single('attachment'), user.request_hel
 app.get('/vendor_sale_percentage/:user_id',vendor.vendor_sale_percentage)
 app.get('/most_sold_product/:user_id',vendor.most_sold_product)
 app.post('/get_price_detail/:user_id',vendor.get_price_detail)
+app.get('/tabel_filter/:user_id',user.Tablefilter)
 
 module.exports = app
