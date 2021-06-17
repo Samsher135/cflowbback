@@ -12,11 +12,11 @@ module.exports = {
 
     pinned_notification:async(req,res)=>{
         try{
-            console.log(req.body,'inside notification')
+            // console.log(req.body,'inside notification')
             let id= req.body.id
             let details=req.body.detail
             let [results1]=await Promise.all([notification.getnotification1(id)])
-            console.log(results1)
+            // console.log(results1)
             if(results1[0].pinned==null){
                 noti.push(details)
                 let [results] = await Promise.all([notification.setnotification1(id,noti)])
@@ -24,7 +24,7 @@ module.exports = {
             }
             else{
                 noti=JSON.parse(results1[0].pinned)
-                console.log(req.body.detail)
+                // console.log(req.body.detail)
                 noti.push(details)
             }
 
@@ -51,7 +51,7 @@ module.exports = {
     insert_product: async (req, res) => {
         try {
             // req.body.name= "product111"
-            console.log(req.body,"HIII")
+            // console.log(req.body,"HIII")
             let [results] = await Promise.all([product.insert_product(req)])
             jsonResponse(res, "product inserted", results)
         
@@ -63,9 +63,9 @@ module.exports = {
     
     maximum_sales: async (req, res) => {
         try {
-            console.log(req.body,"body")
+            // console.log(req.body,"body")
             let [results] = await Promise.all([product.maximum_sales(req)])
-            console.log(results)
+            // console.log(results)
             jsonResponse(res, "sucess", results)
         } catch (error) {
             console.log(error);
@@ -74,11 +74,11 @@ module.exports = {
     },
     no_of_requests: async (req, res) => {
         try {
-            console.log(req.body,"body")
+            // console.log(req.body,"body")
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             
             let [results] = await Promise.all([product.no_of_requests(req)])
-            console.log(results)
+            // console.log(results)
             jsonResponse(res, "sucess", results)
         } catch (error) {
             console.log(error);
@@ -102,7 +102,7 @@ module.exports = {
         try {
 
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            console.log(req.body.id,"pitched")
+            // console.log(req.body.id,"pitched")
             let arr1=[];
     
             // let [results] = await Promise.all([product.get_product_id(req)])
@@ -163,7 +163,7 @@ module.exports = {
             // }
             // console.log(arr, 'arr')
             let [results] = await Promise.all([product.new_requests(req.body.id)]);
-            console.log(results,"HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+            // console.log(results,"HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
                 jsonResponse(res, "sucess",results)
             // jsonResponse(res, "sucess")
             
@@ -176,7 +176,7 @@ module.exports = {
     saved_requests: async (req, res) => {
         try {
     
-            console.log(req.body.type)
+            // console.log(req.body.type)
 
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
 

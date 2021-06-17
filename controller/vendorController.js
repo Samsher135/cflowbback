@@ -284,7 +284,7 @@ module.exports = {
             {
                 data="No Products Sold"
                 count=0
-                results1="Not Applicable"
+                results1=""
             }
             jsonResponse(res, "sucess",{results1,data,count})
 

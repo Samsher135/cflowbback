@@ -59,8 +59,8 @@ class Notification {
             this.setnotification(userid,notification_arr)
         }
         else{
-            notification_arr=(JSON.parse(results1[0].details));
-            notification_arr.push(detail)
+            notification_arr=(JSON.parse(results1[0]?.details));
+            notification_arr?.push(detail)
             this.setnotification(userid,notification_arr)
         }
 

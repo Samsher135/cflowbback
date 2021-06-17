@@ -47,5 +47,6 @@ app.get('/vendor_sale_percentage/:user_id',vendor.vendor_sale_percentage)
 app.get('/most_sold_product/:user_id',vendor.most_sold_product)
 app.post('/get_price_detail/:user_id',vendor.get_price_detail)
 app.get('/tabel_filter/:user_id',user.Tablefilter)
+// app.get('/type_filter/:user_id',user.Typefilter)
 
 module.exports = app

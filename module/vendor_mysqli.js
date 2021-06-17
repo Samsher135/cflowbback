@@ -46,7 +46,7 @@ mysqliq['vendor_month_sale']="SELECT product_status,count(*) as count from vendo
 // mysqliq['vendor_month_sale']="SELECT count(*) AS total FROM product WHERE accepted_vendor=? AND (updated_at BETWEEN ? and ?) AND status = ?"
 
 
-mysqliq['current_month_sale']='SELECT COUNT(*) AS currmonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'
+mysqliq['current_month_sale']='SELECT COUNT(*) AS currmonth FROM vendorproduct WHERE product_status="acceptedPitch" AND Uid=? AND updated_at BETWEEN ? and ?'
 mysqliq['prev_month_sale']='SELECT COUNT(*) AS prevMonth FROM vendorproduct WHERE product_status="accepted" AND Uid=? AND updated_at BETWEEN ? and ?'
 mysqliq['most_sold_product']='SELECT data,type,COUNT(type) AS count FROM product WHERE status="accepted" AND accepted_vendor=? AND updated_at BETWEEN ? and ? GROUP BY type'
 mysqliq['get_price_detail'] = 'SELECT * FROM vendorproduct WHERE Uid=? AND Pid=?'

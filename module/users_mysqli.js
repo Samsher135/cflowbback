@@ -29,7 +29,7 @@ mysqliq['signup'] = 'INSERT into users (email,phone_no,password) values(?,?,?)';
 mysqliq['signInWithOtp'] = 'SELECT * from users WHERE phone_no=? ';
 mysqliq['signInWithEmail'] = 'SELECT * from users WHERE email=? ';
 mysqliq['get_user']="SELECT * from users WHERE id=?"
-mysqliq['updateUser'] = 'UPDATE users SET first_name=?,email=?,pin=?,phone_no=?,whatsapp_no=?,state=?,city=?,company_detail_name=?,company_name=?,company_title=?,company_whatsapp_no=?,company_phone_no=?,company_email_address=?,company_building_name=?,company_house_no=?,company_street=?,company_landmark=?,company_city=?,company_state=?,company_pincode=? WHERE id=? ';
+mysqliq['updateUser'] = 'UPDATE users SET first_name=?,email=?,pin=?,phone_no=?,whatsapp_no=?,state=?,city=?,company_detail_name=?,company_name=?,company_title=?,company_whatsapp_no=?,company_phone_no=?,company_email_address=?,company_building_name=?,company_house_no=?,company_street=?,company_landmark=?,company_city=?,company_state=?,company_pincode=?,fax=? WHERE id=? ';
 // [req.body.first_name,
 //     req.body.email,
 //     req.body.pin,
@@ -57,10 +57,11 @@ mysqliq['get_site']= 'SELECT site from users where id=?';
 mysqliq['add_feedback']='UPDATE users set feedback =? WHERE id=?' 
 
 mysqliq['request_help'] = 'INSERT into helps (u_id,message, file_dest, file_type) values(?,?,?,?)'; //Akhtar
-mysqliq['user_accepted_pitch']='UPDATE vendorproduct set product_status=? WHERE Pid=? AND Uid=?'
+mysqliq['user_accepted_pitch']='UPDATE vendorproduct set product_status=?,vendor_name=? WHERE Pid=? AND Uid=? '
 mysqliq['product_table_status_changed']='UPDATE product set status=? , accepted_vendor=?,final_pitchValue=? WHERE id=?'
 
 mysqliq['user_rejected_pitch']='UPDATE vendorproduct set product_status=? WHERE Pid=? AND Uid=?'
 
 mysqliq['get_user_id']='SELECT user_id from product where id=?'
 mysqliq['table_filter']='SELECT DISTINCT(type) from product where user_id=?;'
+mysqliq['type_filter']='SELECT vendor_services.type,COUNT(vendor_services.type) from vendor_services INNER JOIN product ON vendor_services.type=product.type AND vendor_services.vendor_id=?  AND product.status="pending" GROUP by vendor_services.type'

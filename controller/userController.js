@@ -31,7 +31,7 @@ module.exports = {
 
     singleUser: async (req, res) => {
         try {
-            console.log(req.params)
+
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let [results] = await Promise.all([users.getUser(req)])
             jsonResponse(res, "sucess", results)
@@ -43,7 +43,7 @@ module.exports = {
     insert_user: async (req, res) => {
         try {
             // req.body.name= "product111"
-            console.log(req.body,"HIII")
+      
             let [results] = await Promise.all([users.insert_user(req)])
             jsonResponse(res, "User inserted", results)
         
@@ -70,7 +70,7 @@ module.exports = {
                     req.body.password = await bcrypt.hash(password,12);
                     let [results] = await Promise.all([users.signup(req)])
                     let [results1] = await Promise.all([users.signInWithEmail(req)])
-                    console.log(results1,"results1")
+      
                     const id=results1[0]?.id;
                     const token = jwt.sign({email:results1[0].email, id:results1[0].id} , "secretkey" , {expiresIn:"30d"})
                     if(req.body.isUser){
@@ -111,7 +111,7 @@ module.exports = {
             }
             else  {
                 jsonResponse(res, "User doesn't exists with that phone no");
-                console.log("User doesn't exists with that phone no")
+
             }
         
         } catch (error) {
@@ -124,7 +124,7 @@ module.exports = {
         try {
             if(req.body.otp==otp){
                 let [results] = await Promise.all([users.signInWithOtp(req)])
-                console.log(results,'inside Verifyotp')
+             
                 jsonResponse(res, "User signed In", results);
 
             }
@@ -140,7 +140,7 @@ module.exports = {
     },
     signInWithEmail: async (req, res) => {
         try {
-            console.log(req.body)
+
             let [results] = await Promise.all([users.signInWithEmail(req)])
             let sqlpassword=results[0].password;
             const isPasswordCorrect =await bcrypt.compare(req.body.password,sqlpassword)
@@ -156,9 +156,11 @@ module.exports = {
                 else{
                     console.log('else')
                     
+                    
 
-                }   
-                jsonResponse(res, "User signed In", {token,id})
+                }  
+                jsonResponse(res, "User signed In", {token,id}) 
+                
                 
             }
             else{
@@ -172,7 +174,7 @@ module.exports = {
     },
     updateUser: async (req, res) => {
         try {
-            console.log(req.body,"update")
+
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             
             let [results] = await Promise.all([users.updateUser(req)])
@@ -217,12 +219,12 @@ module.exports = {
                     arr.push(JSON.parse(results1[0]?.site)[i]);
                 }
                 
-                console.log(arr,"arr")
+               
                 arr.push(req.body);
             }
 
             else arr=[req.body]
-            console.log(arr,"arr")   
+            
             let [results] = await Promise.all([users.add_site(req,arr)])
             jsonResponse(res, "sucess", results)
         } catch (error) {
@@ -232,13 +234,12 @@ module.exports = {
     },
     update_site: async (req, res) => {
         try {
-            console.log(req.body,"update")
+            console.log(req.body,"site")
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             
-            
-
-            //req.body => New Data
-            // results1[0].site is array with stored values
+            // let [results1]= await Promise.all([users.get_site(req)])
+            // JSON.parse(results1,"resu")
+            // console.log(results1,"results11 site")
            
             let [results] = await Promise.all([users.update_site(req)])
             jsonResponse(res, "sucess", results)
@@ -264,7 +265,7 @@ module.exports = {
     },
     add_feedback: async (req, res) => {
         try {
-            console.log(req.body,"REQ BODY")
+         
             // console.log(JSON.parse(req.body),"PARSE")
             // console.log(JSON.stringify(req.body),"STRING")
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
@@ -286,7 +287,7 @@ module.exports = {
             jsonResponse(res, "file inserted")
         
         } catch (error) {
-            console.log('HEllo') //By Akhtar
+         //By Akhtar
             console.log(error);
             jsonResponse(res, "error", error);
         };
@@ -294,11 +295,14 @@ module.exports = {
 
     user_accepted_pitch: async (req, res) => {
         try {
-            console.log(req.body)
+   
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            let [results] = await Promise.all([users.user_accepted_pitch(req)])
+            let vendor=await Promise.all([users.get_vendor(req)])
+            console.log(vendor[0][0].company_name,"vendor")
+            const company_name=vendor[0][0]?.company_name
+            let [results] = await Promise.all([users.user_accepted_pitch(req,company_name)])
             let [results1]= await Promise.all([users.product_table_status_changed(req)])
-            console.log(results1)
+       
             let detail ={title:"Pitch accepted",value:req.body.Pitch_value,link:"local/to/table"}
             notification.getnotification(req.body.Uid,detail)
             jsonResponse(res, "sucess", results)
@@ -323,6 +327,17 @@ module.exports = {
         try {
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let result=await Promise.all([users.Table_filter(req)])
+            jsonResponse(res, "sucess",result)
+
+        } catch (error) {
+            console.log(error);
+            jsonResponse(res, "error", error);
+        }
+    },
+    Typefilter:async(req,res)=>{
+        try {
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
+            let result=await Promise.all([users.Type_filter(req)])
             jsonResponse(res, "sucess",result)
 
         } catch (error) {

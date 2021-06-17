@@ -44,8 +44,16 @@ class Users {
 
     async get_user(req) {
         let mysql = {};
-        console.log(req.body.id)
+        // console.log(req.body.id)
         let escape_data = [req.body.id];
+        let strQuery = await mysqliClass.mysqli(mysql, 'get_user');
+
+        return await global.mysql.query(strQuery, escape_data);
+    }
+    async get_vendor(req) {
+        let mysql = {};
+        // console.log(req.body.Uid)
+        let escape_data = [req.body.Uid];
         let strQuery = await mysqliClass.mysqli(mysql, 'get_user');
 
         return await global.mysql.query(strQuery, escape_data);
@@ -84,8 +92,11 @@ class Users {
             req.body.company_city,
             req.body.company_state,
             req.body.company_pincode,
+            req.body.fax,
             req.body.id];
+            
        
+            console.log(req.body,escape_data)
         let strQuery = await mysqliClass.mysqli(mysql, 'updateUser');
         return await global.mysql.query(strQuery, escape_data);
     }
@@ -95,7 +106,7 @@ class Users {
 
         escape_data = [JSON.stringify(arr),req.body.id];
         // escape_data=[req.body.id]
-        console.log(escape_data,"escape data")
+        // console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'add_site');
         return await global.mysql.query(strQuery, escape_data);
     }
@@ -105,7 +116,7 @@ class Users {
         
         escape_data = [JSON.stringify(req.body),req.body.id];
         // escape_data=[req.body.id]
-        console.log(escape_data,"escape data")
+        // console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'add_site');
         return await global.mysql.query(strQuery, escape_data);
     }
@@ -144,10 +155,11 @@ class Users {
     }  
 
 
-    async user_accepted_pitch(req) {
+    async user_accepted_pitch(req,vendor) {
+        
         let mysql = {};
         let escape_data;
-        escape_data = ["acceptedPitch",req.body.Pid,req.body.Uid];
+        escape_data = ["acceptedPitch",vendor,req.body.Pid,req.body.Uid];
         console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'user_accepted_pitch');
         return await global.mysql.query(strQuery, escape_data);
@@ -157,7 +169,7 @@ class Users {
         let mysql = {};
         let escape_data;
         escape_data = ["accepted",req.body.Uid,req.body.pitch_value,req.body.Pid];
-        console.log(escape_data,"escape data")
+        // console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'product_table_status_changed');
         return await global.mysql.query(strQuery, escape_data);
     }
@@ -166,7 +178,7 @@ class Users {
         let escape_data;
 
         escape_data = ["rejectedPitch",req.body.Pid,req.body.Uid];
-        console.log(escape_data,"escape data")
+        // console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'user_rejected_pitch');
         return await global.mysql.query(strQuery, escape_data);
     }
@@ -177,7 +189,13 @@ class Users {
         let strQuery = await mysqliClass.mysqli(mysql, 'table_filter');
         return await global.mysql.query(strQuery, escape_data);
     }
-
+    async Type_filter(req){
+        let mysql = {};
+        let escape_data;
+        escape_data = [req.body.id];
+        let strQuery = await mysqliClass.mysqli(mysql, 'type_filter');
+        return await global.mysql.query(strQuery, escape_data);
+    }
     
 
 

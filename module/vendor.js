@@ -263,7 +263,12 @@ class Vendor {
 
         console.log(prev_month[0].prevMonth,current_month[0].currmonth);
         if(prev_month[0].prevMonth===0){
-            console.log(current_month[0].currmonth)
+            console.log(current_month[0].currmonth,"month")
+            if(current_month[0].currmonth){
+                return 100
+            }
+            else return 0
+            
         }
         else{
             let percentage= ((current_month[0].currmonth-prev_month[0].prevMonth)/prev_month[0].prevMonth)*100;
