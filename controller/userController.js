@@ -54,7 +54,7 @@ module.exports = {
     },
     signup: async (req, res) => {
         try {
-            
+            console.log(req.body,"signup")
             let [existingUser] = await Promise.all([users.signInWithEmail(req)])
             if(existingUser!=''){
                 jsonResponse(res, "User Already Exists")

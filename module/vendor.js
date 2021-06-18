@@ -207,13 +207,13 @@ class Vendor {
         console.log('inside vendor_pitch')
         let price_detail = JSON.stringify(req.body.price_detail)
         escape_data =[req.body.Pid,req.body.id,req.body.pitch_value,price_detail,"pitched"]
-        let a = req.body.Pid;
-        let b= await mysqliClass.mysqli(mysql,'get_user_id');
-        let c=await global.mysql.query(b,a);
-        let detail={title:"New Pitch",value: "You have recived a new Pitch of worth" + req.body.pitch_value,link:'localhost???'}
-        let userid=c[0].user_id;
-        console.log(c)
-        await notification.getnotification(userid,detail)
+        // let a = req.body.Pid;
+        // let b= await mysqliClass.mysqli(mysql,'get_user_id');
+        // let c=await global.mysql.query(b,a);
+        // let detail={title:"New Pitch",value: "You have recived a new Pitch of worth" + req.body.pitch_value,link:'localhost???'}
+        // let userid=c[0].user_id;
+        // console.log(c)
+        // await notification.getnotification(userid,detail)
 
         let strQuery = await mysqliClass.mysqli(mysql, 'vendor_pitched');
         return await global.mysql.query(strQuery, escape_data);

@@ -223,7 +223,7 @@ module.exports = {
     vendor_pitched: async (req, res) => {
         try {
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            
+            console.log(req.body,"pitched")
             let [results] = await Promise.all([vendor.vendor_pitched(req)])
             
             
