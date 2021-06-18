@@ -3,6 +3,8 @@ const {
 } = require("./commonController");
 const vendorModule = require('../module/vendor');
 const vendor = new vendorModule();
+const productModule = require('../module/product');
+const product = new productModule();
 
 
 module.exports = {
@@ -73,9 +75,14 @@ module.exports = {
             
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let [products] = await Promise.all([vendor.products(req)])
+            let [vendors]= await Promise.all([product.vendor()])
             // console.log(products, 'products')
             if(products.length > 0){
-                let [results] = await Promise.all([vendor.new_leads(req,products)])
+              
+                let results;
+                
+                [results] = await Promise.all([vendor.new_leads(req,products,vendors)])
+                console.log(results,"resulstdfjndgfbzljxfnpeqbgahobgfjgfnsprgjpew")
                 // console.log(results, 'products')
                 jsonResponse(res, "sucess",results)
             }
@@ -246,7 +253,21 @@ module.exports = {
         try{
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let [result]= await Promise.all([vendor.vendor_month_sale(req)])
-            jsonResponse(res, "sucess",result)
+            
+            let month_sale={acceptedPitch:"",rejectedPitch:"",pitched:""}
+            for(var i=0;i<result?.length;i++){
+                if(result[i].product_status==="acceptedPitch"){
+                    month_sale.acceptedPitch=result[i]?.count;
+                }
+                else if(result[i].product_status==="rejectedPitch"){
+                    month_sale.rejectedPitch=result[i]?.count;
+                }
+                else {
+                    month_sale.pitched=result[i]?.count;
+                }
+            }
+            console.log("month_sale",month_sale)
+            jsonResponse(res, "sucess",month_sale)
 
         }
         catch(error){

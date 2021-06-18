@@ -36,13 +36,34 @@ class Product {
         return await global.mysql.query(strQuery, escape_data);
     }
 
-    async new_requests(req) {
+    async new_requests(req,vendor) {
+        let mysql = {};
+        let escape_data;
+        let strQuery;
+      
+            escape_data = [req,"pending"];
+            
+        // console.log(escape_data)
+        if(vendor?.length > 0){
+            strQuery = await mysqliClass.mysqli(mysql, 'new_requests');
+        }
+        else{
+            strQuery = await mysqliClass.mysqli(mysql, 'new_requests1');
+        }
+        
+        // console.log(strQuery);
+        return await global.mysql.query(strQuery, escape_data);
+        
+        
+        
+    }
+    async new_requests1(req) {
         let mysql = {};
         
         let escape_data = [req,"pending"];
-        // console.log(escape_data)
-        let strQuery = await mysqliClass.mysqli(mysql, 'new_requests');
-        // console.log(strQuery);
+        console.log(escape_data)
+        let strQuery = await mysqliClass.mysqli(mysql, 'new_requests1');
+        console.log(strQuery);
         return await global.mysql.query(strQuery, escape_data);
     }
     
@@ -75,6 +96,15 @@ class Product {
         let strQuery = await mysqliClass.mysqli(mysql, 'request_service');
         return await global.mysql.query(strQuery, escape_data);
     } 
+    async vendor() {
+        let mysql = {};
+        
+        let escape_data = [];
+        // console.log(escape_data)
+        let strQuery = await mysqliClass.mysqli(mysql, 'vendor');
+        // console.log(strQuery);
+        return await global.mysql.query(strQuery, escape_data);
+    }
     
 }
 

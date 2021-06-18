@@ -136,34 +136,22 @@ module.exports = {
     },
     new_requests: async (req, res) => {
         try {
+            
             // console.log(req.body.type)
 
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            // let arr1=[];
-            // for(var j=0;j<req.body.type.length;j++){
-            //     let [results] = await Promise.all([product.get_product_id(req,req.body.type[j])])
-            //     if(results.length){
-            //         arr1.push(results)
-            //     }
-            // }
+            console.log(req.body,"new_request")
+           
+            let [vendor]= await Promise.all([product.vendor()])
+          
             
+            let results;
         
-            // let arr=[];
-            // if(arr1){
-            //     for(var i=0;i<arr1.length;i++){
-                
-            //         for(var k=0;k<arr1[i].length;k++){
-            //             let [results1] = await Promise.all([product.new_requests(arr1[i][k].id)])
-            //         if(results1.length){
-            //             arr.push(results1)
-            //             // console.log(results1,"r")
-            //         }
-            //         }   
-            //     }
-            // }
-            // console.log(arr, 'arr')
-            let [results] = await Promise.all([product.new_requests(req.body.id)]);
-            // console.log(results,"HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+                [results] = await Promise.all([product.new_requests(req.body.id,vendor)]);
+            
+            
+            
+            console.log(results,"HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
                 jsonResponse(res, "sucess",results)
             // jsonResponse(res, "sucess")
             

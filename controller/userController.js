@@ -204,10 +204,10 @@ module.exports = {
     add_site: async (req, res) => {
         try {
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            let [results1] = await Promise.all([users.get_site(req)])   
-     
+            let [results1] = await Promise.all([users.get_site(req)])  
+            console.log("results of add site",results1)
             let arr=[];
-            let temp=JSON.parse(results1[0].site)
+            let temp=results1[0]?.site?.length ? JSON.parse(results1[0].site):[]
             
 
             //req.body => New Data
@@ -256,7 +256,7 @@ module.exports = {
             // console.log(req.body,"SITE")
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             let [results1] = await Promise.all([users.get_site(req)])
-            let temp = JSON.parse(results1[0].site)
+            let temp = results1?.length ?JSON.parse(results1[0]?.site):"NO sites"
             jsonResponse(res, "sucess", temp)
         } catch (error) {
             console.log(error);

@@ -66,9 +66,11 @@ class Vendor {
         
     }
 
-    async new_leads(req,products) {
+    async new_leads(req,products,vendor) {
+        console.log("PAhuch f=gye")
         let mysql = {};
         let escape_data;
+        let strQuery
         
         let type=products.map((product)=>{
             
@@ -76,12 +78,19 @@ class Vendor {
         })
         
         escape_data =[req.body.id,type,"pending"]
-        console.log(escape_data,"escape")
-        let strQuery = await mysqliClass.mysqli(mysql, 'new_leads');
-        return await global.mysql.query(strQuery, escape_data);
+            // escape_data =[type,"pending"]
+       
+        console.log(vendor?.length,"vendorproduct ka data")
+        if(vendor?.length > 0){
+            escape_data =[req.body.id,type,"pending"]
+            strQuery = await mysqliClass.mysqli(mysql, 'new_leads');
+        }
+        else{
+            escape_data =[type,"pending"]
+            strQuery = await mysqliClass.mysqli(mysql, 'new_leads1');
+        }
         
-
-        // escape_data=[req.body.id]
+        return await global.mysql.query(strQuery, escape_data);
         
     }
 
@@ -297,6 +306,15 @@ class Vendor {
         let escape_data;
         escape_data =[req.body.id,req.body.productId]
         let strQuery = await mysqliClass.mysqli(mysql, 'get_price_detail');
+        return await global.mysql.query(strQuery, escape_data);
+    }
+    async getVendor() {
+        let mysql = {};
+        
+        let escape_data = [];
+        // console.log(escape_data)
+        let strQuery = await mysqliClass.mysqli(mysql, 'vendor');
+        // console.log(strQuery);
         return await global.mysql.query(strQuery, escape_data);
     }
 }
