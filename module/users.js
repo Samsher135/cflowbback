@@ -25,7 +25,7 @@ class Users {
     }
     async signup(req) {
         let mysql = {};
-        let escape_data = [req.body.email,req.body.phone_no, req.body.password];
+        let escape_data = [req.body.email,req.body.phone_no, req.body.password , req.body.isUser];
         let strQuery = await mysqliClass.mysqli(mysql, 'signup');
         return await global.mysql.query(strQuery, escape_data);
     }

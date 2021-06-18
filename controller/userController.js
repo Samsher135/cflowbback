@@ -140,32 +140,30 @@ module.exports = {
     },
     signInWithEmail: async (req, res) => {
         try {
-
             let [results] = await Promise.all([users.signInWithEmail(req)])
-            let sqlpassword=results[0].password;
-            const isPasswordCorrect =await bcrypt.compare(req.body.password,sqlpassword)
-            
-            if(isPasswordCorrect){
-
-                const id=results[0].id;
-                const token = jwt.sign({email:results[0].email, id:results[0].id} , "secretkey" , {expiresIn:"30d"})
-                let [result1]=await Promise.all([notification.find_user(JSON.stringify(results[0].id))])
-                if(result1 != ''){
-                    console.log('user exists')
+            let check_dict= {0:false , 1 : true}
+            console.log(req.body.isUser , results[0]?.isUser)
+            if(req.body.isUser === check_dict[results[0].isUser])
+            {   
+                console.log("INSIDE IF")
+                let sqlpassword=results[0].password;
+                const isPasswordCorrect =await bcrypt.compare(req.body.password,sqlpassword)            
+                if(isPasswordCorrect)
+                {
+                    const id=results[0].id;
+                    const token = jwt.sign({email:results[0].email, id:results[0].id} , "secretkey" , {expiresIn:"30d"})
+                    let [result1]=await Promise.all([notification.find_user(JSON.stringify(results[0].id))])  
+                    jsonResponse(res, "User signed In", {token,id})                
                 }
-                else{
-                    console.log('else')
-                    
-                    
-
-                }  
-                jsonResponse(res, "User signed In", {token,id}) 
-                
-                
+                else
+                {
+                    jsonResponse(res, "Password Incorrect"); 
+                }                           
             }
-            else{
-                jsonResponse(res, "Password Incorrect"); 
-            }
+            else
+            {
+                jsonResponse(res, "Type Incorrect");
+            }            
         
         } catch (error) {
             console.log(error)

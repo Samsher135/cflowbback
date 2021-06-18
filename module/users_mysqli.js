@@ -25,7 +25,7 @@ mysqliq['single_user'] = 'SELECT * FROM users WHERE id = ?'
 
 
 mysqliq['insert_user'] = 'INSERT into users (email,password) values(?,?)';
-mysqliq['signup'] = 'INSERT into users (email,phone_no,password) values(?,?,?)';
+mysqliq['signup'] = 'INSERT into users (email,phone_no,password,isUser) values(?,?,?,?)';
 mysqliq['signInWithOtp'] = 'SELECT * from users WHERE phone_no=? ';
 mysqliq['signInWithEmail'] = 'SELECT * from users WHERE email=? ';
 mysqliq['get_user']="SELECT * from users WHERE id=?"
