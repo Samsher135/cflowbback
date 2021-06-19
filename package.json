@@ -4,7 +4,7 @@
   "description": "Backend App for Construction Flow, a part of Digital Flow",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "endokishan",
