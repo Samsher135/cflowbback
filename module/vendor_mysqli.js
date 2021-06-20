@@ -18,10 +18,12 @@ module.exports = class mysqli {
 
 
 var mysqliq = []
-
+mysqliq['service_exist'] = 'SELECT info from vendor_services where vendor_id=? AND type=?';
 mysqliq['add_service'] = 'INSERT into vendor_services(vendor_id,service_type,type,info) values(?,?,?,?)';
 
 mysqliq['update_service'] = 'UPDATE vendor_services SET info=? where vendor_id=? AND type=?';
+
+mysqliq['delete_service'] = 'DELETE from vendor_services where vendor_id=? AND type=?';
 
 mysqliq['get_services'] = 'SELECT * from vendor_services where vendor_id=?';
 mysqliq['get_services_by_filter'] = 'SELECT * from vendor_services where vendor_id=? AND type=?';

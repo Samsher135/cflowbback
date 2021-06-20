@@ -13,19 +13,93 @@ module.exports = {
         try {
             console.log(req.body)
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            let [results] = await Promise.all([vendor.add_service(req)])
-            jsonResponse(res, "sucess",results)
+            let exists=await Promise.all([vendor.service_exist(req)]);
+            console.log(exists,"exists")
+            let info
+            let type_arr
+            type_arr= new Set()
+            let brand_arr= new Set()
+            let size_arr= new Set()
+            let grade_arr= new Set()
+            if(exists[0]?.length >0){
+                info=JSON.parse(exists[0][0]?.info)
+                console.log(exists[0][0]?.info)
+                info?.type && info?.type?.map((info)=>type_arr.add(info))
+                info?.brand && info?.brand?.map((info)=>brand_arr.add(info))
+                info?.size && info?.size?.map((info)=>size_arr.add(info))
+                info?.grade && info?.grade?.map((info)=>grade_arr.add(info))
+            }
+       
+           
+            
+            req.body.info?.type && req.body.info?.type?.map((info)=>type_arr.add(info))
+            req.body.info?.brand && req.body.info?.brand?.map((info)=>brand_arr.add(info))
+            req.body.info?.size && req.body.info?.size?.map((info)=>size_arr.add(info))
+            req.body.info?.grade && req.body.info?.size?.map((info)=>grade_arr.add(info))
+            
+            
+    
+            
+            const arr1={type:[...type_arr] ,brand:[...brand_arr],size:[...size_arr],grade:[...grade_arr]}
+            
+            
+        
+            if(exists[0]?.length >0){
+                console.log("exist ke andar")
+                console.log(req.body.type,req.body.id,arr1)
+                let [results] = await Promise.all([vendor.update_service1(req,arr1)])
+                jsonResponse(res, "sucess",results)
+            }
+            else{
+                console.log("exist ke else me")
+                console.log(req.body.type,req.body.id)
+                let [results] = await Promise.all([vendor.add_service(req)])
+                jsonResponse(res, "sucess",results)
+            }
+            
+        
         } catch (error) {
             console.log(error);
             jsonResponse(res, "error", error);
         };
     },
-    update_service: async (req, res) => {
+    delete_service: async (req, res) => {
         try {
             console.log(req.body)
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            let [results] = await Promise.all([vendor.update_service(req)])
-            jsonResponse(res, "sucess",results)
+            let exists=await Promise.all([vendor.service_exist(req)]);
+            
+            const info1=JSON.parse(exists[0][0]?.info)
+
+            let type_arr
+            type_arr= new Set()
+            let brand_arr= new Set()
+            let size_arr= new Set()
+            let grade_arr= new Set()
+            info1?.type && info1?.type?.map((info2)=>arr.add(info2))
+            info1?.brand && info1?.brand?.map((info2)=>brand_arr.add(info2))
+            info1?.size && info1?.size?.map((info2)=>size_arr.add(info2))
+            info1?.grade && info1?.grade?.map((info2)=>grade_arr.add(info2))
+    
+            
+            req.body.info?.type && req.body.info?.type?.map((info)=>type_arr.delete(info))
+            req.body.info?.brand && req.body.info?.brand?.map((info)=>brand_arr.delete(info))
+            req.body.info?.size && req.body.info?.size?.map((info)=>size_arr.delete(info))
+            req.body.info?.grade && req.body.info?.size?.map((info)=>grade_arr.delete(info))
+            
+
+     
+            const arr1={type:[...type_arr] ,brand:[...brand_arr],size:[...size_arr],grade:[...grade_arr]}
+            if(arr1.type?.length ===0 && arr1.brand?.length ===0 && arr1.size?.length ===0 && arr1.grade?.length ===0){
+                let [resulst1]= await Promise.all([vendor.delete_service(req)])
+                jsonResponse(res, "sucess",results1)
+            }
+            else{
+                let [results] = await Promise.all([vendor.update_service1(req,arr1)])
+                jsonResponse(res, "sucess",results)
+            }
+   
+            
         } catch (error) {
             console.log(error);
             jsonResponse(res, "error", error);

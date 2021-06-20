@@ -16,9 +16,24 @@ class Vendor {
         return await global.mysql.query(strQuery, escape_data);
  
     }
+    async service_exist(req) {
+        let mysql = {};
+        let escape_data;
+        
+        
+        escape_data =[req.body.id,req.body.type]
+        let strQuery = await mysqliClass.mysqli(mysql, 'service_exist');
+        return await global.mysql.query(strQuery, escape_data);
+        
+
+
+        // escape_data=[req.body.id]
+        
+    }
     async add_service(req) {
         let mysql = {};
         let escape_data;
+
         
         escape_data =[req.body.id,req.body.service_type,req.body.type,JSON.stringify(req.body.info)]
         let strQuery = await mysqliClass.mysqli(mysql, 'add_service');
@@ -29,13 +44,29 @@ class Vendor {
         // escape_data=[req.body.id]
         
     }
-    async update_service(req) {
+    async update_service1(req,arr) {
+        
         let mysql = {};
         let escape_data;
 
       
-        escape_data =[JSON.stringify(req.body.info),req.body.id,req.body.type]
+        escape_data =[JSON.stringify(arr),req.body.id,req.body.type]
+        console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'update_service');
+        return await global.mysql.query(strQuery, escape_data);
+        
+        // escape_data=[req.body.id]
+        
+    }
+    async delete_service(req) {
+        
+        let mysql = {};
+        let escape_data;
+
+      
+        escape_data =[req.body.id,req.body.type]
+        console.log(escape_data,"escape data")
+        let strQuery = await mysqliClass.mysqli(mysql, 'delete_service');
         return await global.mysql.query(strQuery, escape_data);
         
         // escape_data=[req.body.id]

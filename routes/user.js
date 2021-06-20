@@ -25,7 +25,7 @@ app.post('/user_rejected_pitch/:user_id',user.user_rejected_pitch)
 
 
 app.post('/add_service/:user_id',vendor.add_service)
-app.post('/update_service/:user_id',vendor.update_service)
+app.post('/delete_service/:user_id',vendor.delete_service)
 app.get('/get_services/:user_id',vendor.get_services)
 app.get('/get_services_by_filter/:user_id',vendor.get_services_by_filter)
 app.get('/new_leads/:user_id',vendor.new_leads)
