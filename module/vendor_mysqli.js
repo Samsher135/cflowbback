@@ -26,7 +26,7 @@ mysqliq['update_service'] = 'UPDATE vendor_services SET info=? where vendor_id=?
 mysqliq['delete_service'] = 'DELETE from vendor_services where vendor_id=? AND type=?';
 
 mysqliq['get_services'] = 'SELECT * from vendor_services where vendor_id=?';
-mysqliq['get_services_by_filter'] = 'SELECT * from vendor_services where vendor_id=? AND type=?';
+mysqliq['get_services_by_type'] = 'SELECT * from vendor_services where vendor_id=? AND type=?';
 mysqliq['new_leads']='SELECT P.* from product P INNER JOIN vendorproduct VP ON ((P.id NOT IN (SELECT Pid FROM vendorproduct)) OR (P.id = VP.Pid AND VP.Uid != ?) ) WHERE P.type IN (?) AND P.status=? GROUP BY P.id';
 mysqliq['new_leads1']='SELECT P.* from product P WHERE P.type IN (?) AND P.status=?';
 mysqliq['get_pending_leads']='SELECT * from vendorproduct INNER JOIN product on vendorproduct.Pid=product.id WHERE vendorproduct.Uid=? AND vendorproduct.product_status=? ';

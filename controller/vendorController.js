@@ -11,52 +11,53 @@ module.exports = {
 
     add_service: async (req, res) => {
         try {
-            console.log(req.body)
-            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
-            let exists=await Promise.all([vendor.service_exist(req)]);
-            console.log(exists,"exists")
-            let info
-            let type_arr
-            type_arr= new Set()
-            let brand_arr= new Set()
-            let size_arr= new Set()
-            let grade_arr= new Set()
-            if(exists[0]?.length >0){
-                info=JSON.parse(exists[0][0]?.info)
-                console.log(exists[0][0]?.info)
-                info?.type && info?.type?.map((info)=>type_arr.add(info))
-                info?.brand && info?.brand?.map((info)=>brand_arr.add(info))
-                info?.size && info?.size?.map((info)=>size_arr.add(info))
-                info?.grade && info?.grade?.map((info)=>grade_arr.add(info))
+            console.log(req.body,"HERE")
+            req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;          
+            let [services] = await Promise.all([vendor.get_services_by_type(req)])
+            const set2 = new Set();
+            const new_data = req.body.info;
+            let count = 0;
+            if(services[0]?.info)
+            {
+                let info_arr = JSON.parse(services[0]?.info)
+                const keys = Object.keys(req.body.info[0])
+                let new_arr =[]
+                let exist = false;
+                new_data.map((new_val)=>
+                {
+                    exist = false;
+                    info_arr.map((db_val) =>
+                    {
+                        count = 0;
+                        keys.map((key) => 
+                        {
+                            if(db_val[key] === new_val[key])
+                            {
+                                count++;
+                            }
+                        })
+                        if(count === keys.length)
+                        {
+                            exist = true;
+                        }                  
+                    })  
+                    if(!exist)
+                    {
+                        new_arr.push(new_val)
+                    }                
+                })
+                info_arr.map((db_val) => new_arr.push(db_val))
+                console.log(new_arr,"NEW ARR databases filled")
+                let [results] = await Promise.all([vendor.update_service1(req,new_arr)])
+                jsonResponse(res, "success",results)
             }
-       
-           
-            
-            req.body.info?.type && req.body.info?.type?.map((info)=>type_arr.add(info))
-            req.body.info?.brand && req.body.info?.brand?.map((info)=>brand_arr.add(info))
-            req.body.info?.size && req.body.info?.size?.map((info)=>size_arr.add(info))
-            req.body.info?.grade && req.body.info?.size?.map((info)=>grade_arr.add(info))
-            
-            
-    
-            
-            const arr1={type:[...type_arr] ,brand:[...brand_arr],size:[...size_arr],grade:[...grade_arr]}
-            
-            
-        
-            if(exists[0]?.length >0){
-                console.log("exist ke andar")
-                console.log(req.body.type,req.body.id,arr1)
-                let [results] = await Promise.all([vendor.update_service1(req,arr1)])
-                jsonResponse(res, "sucess",results)
+            else
+            {
+                console.log(set2,"Set2 if new data")
+                let [results] = await Promise.all([vendor.add_service(req,req.body.info)])
+                jsonResponse(res, "success",results)
             }
-            else{
-                console.log("exist ke else me")
-                console.log(req.body.type,req.body.id)
-                let [results] = await Promise.all([vendor.add_service(req)])
-                jsonResponse(res, "sucess",results)
-            }
-            
+                        
         
         } catch (error) {
             console.log(error);
@@ -266,10 +267,23 @@ module.exports = {
             
             req.body.id = (typeof (req.params.user_id) === 'undefined') ? 0 : req.params.user_id;
             console.log(req.body.id)
-            let [results] = await Promise.all([vendor.sales_vendor(req)])
-            console.log(results)
+            let [result] = await Promise.all([vendor.sales_vendor(req)])
+            console.log(result)
+                        
+            let month_sale={acceptedPitch:"",rejectedPitch:"",pitched:""}
+            for(var i=0;i<result?.length;i++){
+                if(result[i].product_status==="acceptedPitch"){
+                    month_sale.acceptedPitch=result[i]?.count;
+                }
+                else if(result[i].product_status==="rejectedPitch"){
+                    month_sale.rejectedPitch=result[i]?.count;
+                }
+                else {
+                    month_sale.pitched=result[i]?.count;
+                }
+            }
             
-            jsonResponse(res, "sucess",results)
+            jsonResponse(res, "sucess",month_sale)
         } catch (error) {
             console.log(error);
             jsonResponse(res, "error", error);

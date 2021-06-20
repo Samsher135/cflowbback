@@ -30,12 +30,12 @@ class Vendor {
         // escape_data=[req.body.id]
         
     }
-    async add_service(req) {
+    async add_service(req,arr) {
         let mysql = {};
         let escape_data;
-
         
-        escape_data =[req.body.id,req.body.service_type,req.body.type,JSON.stringify(req.body.info)]
+        escape_data =[req.body.id,req.body.service_type,req.body.type,JSON.stringify(arr)]
+        console.log(escape_data,"escape data")
         let strQuery = await mysqliClass.mysqli(mysql, 'add_service');
         return await global.mysql.query(strQuery, escape_data);
         
@@ -84,12 +84,12 @@ class Vendor {
         // escape_data=[req.body.id]
         
     }
-    async get_services_by_filter(req) {
+    async get_services_by_type(req) {
         let mysql = {};
         let escape_data;
     
         escape_data =[req.body.id,req.body.type]
-        let strQuery = await mysqliClass.mysqli(mysql, 'get_services_by_filter');
+        let strQuery = await mysqliClass.mysqli(mysql, 'get_services_by_type');
         return await global.mysql.query(strQuery, escape_data);
         
 
