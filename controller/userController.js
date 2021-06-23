@@ -3,13 +3,14 @@ const {
 } = require("./commonController");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+var nodemailer = require('nodemailer');
 const notificationModule = require('../module/notification');
 const notification= new notificationModule();
 let noti=[]
 
 
-const accountSid='ACb505901926ff05773f53e233b9ef82ef'
-const authToken='1bd840e04ba546378c83521ebc72b936'
+const accountSid='AC1b002835506ca29c6a5dd72d2df4ea79'
+const authToken='ff55b7a37b5bbe42e869f92e95f0f326'
 
 const client=require('twilio')(accountSid,authToken)
 const usersModule = require('../module/users');
@@ -103,8 +104,8 @@ module.exports = {
                 client.messages
                 .create({
                     body:`This is your OTP ${otp} for login to Construction Flow `,
-                    from:'+18182394629',
-                    to:'+919009668488'
+                    from:'+14154964979',
+                    to:'+919892885491'
                 })
                 .then(message=>console.log(message.sid))
                 jsonResponse(res, "Phone number exists");
@@ -138,6 +139,75 @@ module.exports = {
             jsonResponse(res, "error", error);
         };
     },
+    sendlinktoemail: async (req, res) => {
+        try {
+        var date = new Date();
+        let [results1] = await Promise.all([users.signInWithEmail(req)])
+        var mail = {
+                    "id": results1[0].id,
+                    "created": date.toString()
+                    }
+
+        const token_mail_verification = jwt.sign(mail, "samsingh9892885@gmail.com", { expiresIn: '1d' });
+
+        var url = "http://localhost:7000" + "/user/verify?id=" + token_mail_verification;
+
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: "12345samsingh.samu@gmail.com", // username for your mail server
+                pass: "SamSingh@135", // password
+            },
+    
+        });
+    
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: 'samsingh9892885@gmail.com', // sender address
+            to: '12345samsingh.samu@gmail.com', // list of receivers seperated by comma
+            subject: "Account Verification", // Subject line
+            text: "Click on the link below to veriy your account " + url, // plain text body
+        }, (error, info) => {
+    
+            if (error) {
+                console.log(error)
+                return;
+            }
+            console.log('Message sent successfully!');
+            console.log(info);
+            transporter.close();
+        });
+        
+        } catch (error) {
+            console.log(error,"HELLO");
+            jsonResponse(res, "error", error);
+        };
+    },
+    verifyemail: async (req, res) => {
+        try {
+            token = req.query.id;
+            if (token) {
+                    jwt.verify(token, "samsingh9892885@gmail.com", (e, decoded) => {
+                        if (e) {
+                            console.log(e)
+                            res.sendStatus(403)
+                        } else {
+                            id = decoded.id;
+                            req.body.id = id;
+                            let [results2] = await Promise.all([users.updateFlag(req)]);
+                            jsonResponse(res, "Email verified", results2);
+                        }
+                    });
+            } else {
+                res.sendStatus(403)
+            }
+        
+        } catch (error) {
+            console.log(error,"HELLO");
+            jsonResponse(res, "error", error);
+        };
+    },
+    
     signInWithEmail: async (req, res) => {
         try {
             let [results] = await Promise.all([users.signInWithEmail(req)])

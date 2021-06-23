@@ -29,6 +29,12 @@ class Users {
         let strQuery = await mysqliClass.mysqli(mysql, 'signup');
         return await global.mysql.query(strQuery, escape_data);
     }
+    async updateFlag(req) {
+        let mysql = {};
+        let escape_data = [req.body.id];
+        let strQuery = await mysqliClass.mysqli(mysql, 'updateFlag');
+        return await global.mysql.query(strQuery, escape_data);
+    }
     async signInWithOtp(req) {
         let mysql = {};
         let escape_data = [req.body.phone_no];
