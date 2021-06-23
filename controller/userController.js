@@ -187,7 +187,7 @@ module.exports = {
         try {
             token = req.query.id;
             if (token) {
-                    jwt.verify(token, "samsingh9892885@gmail.com", (e, decoded) => {
+                    jwt.verify(token, "samsingh9892885@gmail.com", async (e, decoded) => {
                         if (e) {
                             console.log(e)
                             res.sendStatus(403)
@@ -233,7 +233,10 @@ module.exports = {
             else
             {
                 jsonResponse(res, "Type Incorrect");
-            }            
+            }
+            if(results[0].isverified == "True"){
+                jsonResponse(res, "plz verify email by visting the link")
+            }           
         
         } catch (error) {
             console.log(error)
